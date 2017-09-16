@@ -18,13 +18,20 @@ public class ConnectGUI : MonoBehaviour {
     bool isConnected;
     float throttle, brake;
     char gear = 'D';
+    float turningAngle;
+
     public Text shownGear;
     public Button setGear;
     public Slider throtleSlider, brakeSlider;
+    public Text speed;
+    public Text angle;
+
+    VehicleStatus status;
 
     // Use this for initialization
     void Start () 
     {
+        Input.gyro.enabled = true;
         imageTexture = new Texture2D(255, 255);
         shownGear.text = "D";
         setGear.GetComponentInChildren<Text>().text = "Gear";
@@ -56,12 +63,15 @@ public class ConnectGUI : MonoBehaviour {
                     vehicle.SetGear(GearDirection.GEAR_DIRECTION_BACKWARD);
                 }
 
+                turningAngle = Input.gyro.attitude.x;
+                vehicle.SetSteeringAngle(turningAngle);
+
 
                 //vehicle.SetThrottle(Input.GetAxis("Vertical"));
                 //vehicle.SetBrake(Mathf.Clamp01(-Input.GetAxis("Vertical")));
                 vehicle.SetThrottle(throttle);
                 vehicle.SetBrake(brake);
-                vehicle.SetSteeringAngle(Input.GetAxis("Horizontal"));
+                //vehicle.SetSteeringAngle(Input.GetAxis("Horizontal"));
                 vehicle.Update();
 
                 CameraSensor s = (CameraSensor) vehicle.Sensor(SensorType.SENSOR_TYPE_CAMERA_FRONT);
@@ -74,6 +84,9 @@ public class ConnectGUI : MonoBehaviour {
                         cameraDisplay.material.mainTexture = imageTexture;
                     }
                 }
+
+                status = vehicle.Status;
+                updateSpeedDisplay();
             }
         }
     }
@@ -127,5 +140,11 @@ public class ConnectGUI : MonoBehaviour {
             gear = 'D';
             shownGear.text = "D";
         }
+    }
+
+    private void updateSpeedDisplay()
+    {
+        speed.text = status.Velocity.ToString() + "m/s";
+        angle.text = turningAngle.ToString();
     }
 }
