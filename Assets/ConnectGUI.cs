@@ -25,7 +25,6 @@ public class ConnectGUI : MonoBehaviour {
     public Button setGear;
     public Slider throtleSlider, brakeSlider;
     public Text speed;
-    public Text angle;
     public InputField ipCarAddress;
 
     VehicleStatus status;
@@ -65,7 +64,7 @@ public class ConnectGUI : MonoBehaviour {
                     vehicle.SetGear(GearDirection.GEAR_DIRECTION_BACKWARD);
                 }
 
-                turningAngle = Input.gyro.attitude.x;
+                turningAngle = Input.acceleration.x;
                 vehicle.SetSteeringAngle(turningAngle);
 
 
@@ -108,7 +107,7 @@ public class ConnectGUI : MonoBehaviour {
 
     public void Throttle_Changed(float newValue)
     {
-        this.throttle = newValue;
+        this.throttle = newValue / 100;
 
         if(brake > 0)
         {
@@ -147,11 +146,11 @@ public class ConnectGUI : MonoBehaviour {
 
     private void updateSpeedDisplay()
     {
-        speed.text = status.Velocity.ToString() + "m/s";
-        angle.text = turningAngle.ToString();
+        int intSpeed = (int)status.Velocity;
+        speed.text = intSpeed.ToString() + "m/s";
     }
 
-    public void updateCarIP(string ip)
+    private void updateCarIP(string ip)
     {
         carIP = ip;
     }

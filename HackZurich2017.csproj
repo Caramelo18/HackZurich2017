@@ -81,7 +81,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\ConnectGUI.cs" />
-    <Compile Include="Assets\CustomButton.cs" />
     <Compile Include="Assets\Kopernikus\Downloader.cs" />
     <Compile Include="Assets\Kopernikus\Kopernikus.cs" />
     <Compile Include="Assets\Kopernikus\Recorder.cs" />
