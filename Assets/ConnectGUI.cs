@@ -19,12 +19,15 @@ public class ConnectGUI : MonoBehaviour {
     float throttle, brake;
     char gear = 'D';
     public Text shownGear;
+    public Button setGear;
+    public Slider throtleSlider, brakeSlider;
 
     // Use this for initialization
     void Start () 
     {
         imageTexture = new Texture2D(255, 255);
         shownGear.text = "D";
+        setGear.GetComponentInChildren<Text>().text = "Gear";
     }
 
     // Update is called once per frame
@@ -90,11 +93,24 @@ public class ConnectGUI : MonoBehaviour {
     public void Throttle_Changed(float newValue)
     {
         this.throttle = newValue;
+
+        if(brake > 0)
+        {
+            brake = 0;
+            brakeSlider.value = 0;
+        }
     }
 
     public void Brake_Changed(float newValue)
     {
         this.brake = newValue;
+
+        if(throttle > 0)
+        {
+            throttle = 0;
+            throtleSlider.value = 0;
+        }
+
     }
 
     public void changeGear()
