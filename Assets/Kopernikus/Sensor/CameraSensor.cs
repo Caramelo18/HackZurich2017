@@ -175,7 +175,7 @@ namespace KopernikusWrapper
             */
             //UnityEngine.Debug.Log(s);
 
-            UnityEngine.Debug.Log("Received: "+numBytesRecv);
+            //UnityEngine.Debug.Log("Received: "+numBytesRecv);
 
             data = new CameraSensorData(640, 360, CameraSensorData.CameraDataFormat.jpeg, readBuffer);
             requestImage = true;
