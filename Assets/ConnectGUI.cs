@@ -18,13 +18,13 @@ public class ConnectGUI : MonoBehaviour {
     bool isConnected;
     float throttle, brake;
     char gear = 'D';
-    Text shownGear;
+    public Text shownGear;
 
     // Use this for initialization
     void Start () 
     {
         imageTexture = new Texture2D(255, 255);
-        shownGear = GetComponent<Text>(); ;
+        shownGear.text = "D";
     }
 
     // Update is called once per frame
@@ -37,7 +37,7 @@ public class ConnectGUI : MonoBehaviour {
                 isConnected = true;
                 vehicle.SetGear(GearDirection.GEAR_DIRECTION_FORWARD);
             }
-
+            
             if (vehicle.Connected)
             {
                 if (Input.GetKeyDown(KeyCode.Q))
