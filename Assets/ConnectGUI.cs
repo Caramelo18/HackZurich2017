@@ -30,7 +30,7 @@ public class ConnectGUI : MonoBehaviour {
     VehicleStatus status;
 
     // Use this for initialization
-    void Start () 
+    void Start ()
     {
         Input.gyro.enabled = true;
         imageTexture = new Texture2D(255, 255);
@@ -48,7 +48,7 @@ public class ConnectGUI : MonoBehaviour {
                 isConnected = true;
                 vehicle.SetGear(GearDirection.GEAR_DIRECTION_FORWARD);
             }
-            
+
             if (vehicle.Connected)
             {
                 if (Input.GetKeyDown(KeyCode.Q))
@@ -58,7 +58,7 @@ public class ConnectGUI : MonoBehaviour {
                 else if (Input.GetKeyDown(KeyCode.W))
                 {
                     vehicle.SetGear(GearDirection.GEAR_DIRECTION_FORWARD);
-                }        
+                }
                 else if (Input.GetKeyDown(KeyCode.E))
                 {
                     vehicle.SetGear(GearDirection.GEAR_DIRECTION_BACKWARD);
@@ -91,7 +91,7 @@ public class ConnectGUI : MonoBehaviour {
             }
         }
     }
-        
+
     void OnGUI()
     {
         if (!isConnected)
@@ -107,7 +107,13 @@ public class ConnectGUI : MonoBehaviour {
 
     public void Throttle_Changed(float newValue)
     {
-        this.throttle = newValue / 100;
+        //newValue between 0 and 100
+        //this.throttle = newValue / 100;
+        this.throttle = Mathf.Pow(2, newValue / 10) / 1024;
+
+        if (newValue > 0)
+            this.throttle += (float) 0.3;
+            
 
         if(brake > 0)
         {
@@ -118,9 +124,13 @@ public class ConnectGUI : MonoBehaviour {
 
     public void Brake_Changed(float newValue)
     {
-        this.brake = newValue;
+        //newValue between 0 and 1
+        this.brake = Mathf.Pow(2, newValue * 10) / 1024;
 
-        if(throttle > 0)
+        if (newValue > 0)
+            this.brake += (float)0.3;
+
+        if (throttle > 0)
         {
             throttle = 0;
             throtleSlider.value = 0;
