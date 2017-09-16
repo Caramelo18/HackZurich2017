@@ -19,12 +19,14 @@ public class ConnectGUI : MonoBehaviour {
     float throttle, brake;
     char gear = 'D';
     float turningAngle;
+    string carIP;
 
     public Text shownGear;
     public Button setGear;
     public Slider throtleSlider, brakeSlider;
     public Text speed;
     public Text angle;
+    public InputField ipCarAddress;
 
     VehicleStatus status;
 
@@ -98,7 +100,8 @@ public class ConnectGUI : MonoBehaviour {
             if (GUI.Button(new Rect(Screen.width * 0.5f - 300, Screen.height * 0.5f - 100, 600, 200), "Connect"))
             {
                 //vehicle = Kopernikus.Instance.Vehicle("172.30.6.145");
-                vehicle = Kopernikus.Instance.Vehicle("192.168.137.1");
+                //vehicle = Kopernikus.Instance.Vehicle("192.168.137.1");
+                vehicle = Kopernikus.Instance.Vehicle(carIP);
             }
         }
     }
@@ -146,5 +149,10 @@ public class ConnectGUI : MonoBehaviour {
     {
         speed.text = status.Velocity.ToString() + "m/s";
         angle.text = turningAngle.ToString();
+    }
+
+    public void updateCarIP(string ip)
+    {
+        carIP = ip;
     }
 }
