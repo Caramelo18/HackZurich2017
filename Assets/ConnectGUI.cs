@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using KopernikusWrapper;
+using UnityEngine.UI;
 
 public class ConnectGUI : MonoBehaviour {
     public enum ConnectionState
@@ -16,11 +17,14 @@ public class ConnectGUI : MonoBehaviour {
     Vehicle vehicle;
     bool isConnected;
     float throttle, brake;
+    char gear = 'D';
+    Text shownGear;
 
     // Use this for initialization
     void Start () 
     {
         imageTexture = new Texture2D(255, 255);
+        shownGear = GetComponent<Text>(); ;
     }
 
     // Update is called once per frame
@@ -31,6 +35,7 @@ public class ConnectGUI : MonoBehaviour {
             {
                 Debug.Log("VehicleAvailable");
                 isConnected = true;
+                vehicle.SetGear(GearDirection.GEAR_DIRECTION_FORWARD);
             }
 
             if (vehicle.Connected)
@@ -50,8 +55,9 @@ public class ConnectGUI : MonoBehaviour {
 
 
                 //vehicle.SetThrottle(Input.GetAxis("Vertical"));
+                //vehicle.SetBrake(Mathf.Clamp01(-Input.GetAxis("Vertical")));
                 vehicle.SetThrottle(throttle);
-                vehicle.SetBrake(Mathf.Clamp01(-Input.GetAxis("Vertical")));
+                vehicle.SetBrake(brake);
                 vehicle.SetSteeringAngle(Input.GetAxis("Horizontal"));
                 vehicle.Update();
 
@@ -75,7 +81,8 @@ public class ConnectGUI : MonoBehaviour {
         {
             if (GUI.Button(new Rect(Screen.width * 0.5f - 300, Screen.height * 0.5f - 100, 600, 200), "Connect"))
             {
-                vehicle = Kopernikus.Instance.Vehicle("172.30.6.145");
+                //vehicle = Kopernikus.Instance.Vehicle("172.30.6.145");
+                vehicle = Kopernikus.Instance.Vehicle("192.168.137.1");
             }
         }
     }
@@ -88,5 +95,21 @@ public class ConnectGUI : MonoBehaviour {
     public void Brake_Changed(float newValue)
     {
         this.brake = newValue;
+    }
+
+    public void changeGear()
+    {
+        if(gear == 'D')
+        {
+            vehicle.SetGear(GearDirection.GEAR_DIRECTION_BACKWARD);
+            gear = 'R';
+            shownGear.text = "R";
+        }
+        else
+        {
+            vehicle.SetGear(GearDirection.GEAR_DIRECTION_FORWARD);
+            gear = 'D';
+            shownGear.text = "D";
+        }
     }
 }
