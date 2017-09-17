@@ -19,7 +19,7 @@ public class ConnectGUI : MonoBehaviour {
     float throttle, brake;
     char gear = 'D';
     float turningAngle;
-    string carIP = "192.168.137.1"B;
+    string carIP = "192.168.137.1";
 
     public Text shownGear;
     public Button setGear;
