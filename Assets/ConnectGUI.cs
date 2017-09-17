@@ -19,7 +19,7 @@ public class ConnectGUI : MonoBehaviour {
     float throttle, brake;
     char gear = 'D';
     float turningAngle;
-    string carIP;
+    string carIP = "192.168.137.1"B;
 
     public Text shownGear;
     public Button setGear;
@@ -98,8 +98,6 @@ public class ConnectGUI : MonoBehaviour {
         {
             if (GUI.Button(new Rect(Screen.width * 0.5f - 300, Screen.height * 0.5f - 100, 600, 200), "Connect"))
             {
-                //vehicle = Kopernikus.Instance.Vehicle("172.30.6.145");
-                //vehicle = Kopernikus.Instance.Vehicle("192.168.137.1");
                 vehicle = Kopernikus.Instance.Vehicle(carIP);
             }
         }
