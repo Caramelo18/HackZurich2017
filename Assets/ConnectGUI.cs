@@ -23,6 +23,7 @@ public class ConnectGUI : MonoBehaviour {
 
     public Text shownGear;
     public Button setGear;
+    public Button connectVehicle;
     public Slider throtleSlider, brakeSlider;
     public Text speed;
     public InputField ipCarAddress;
@@ -34,12 +35,16 @@ public class ConnectGUI : MonoBehaviour {
     {
         Input.gyro.enabled = true;
         imageTexture = new Texture2D(255, 255);
+
+        setGear.gameObject.SetActive(false);
+
         shownGear.text = "D";
         setGear.GetComponentInChildren<Text>().text = "Gear";
     }
 
     // Update is called once per frame
     void Update () {
+
         if (vehicle != null)
         {
             if (!isConnected && vehicle.Connected)
@@ -51,6 +56,9 @@ public class ConnectGUI : MonoBehaviour {
 
             if (vehicle.Connected)
             {
+
+                changeUItoDriveMode();
+
                 if (Input.GetKeyDown(KeyCode.Q))
                 {
                     vehicle.SetGear(GearDirection.GEAR_DIRECTION_NEUTRAL);
@@ -89,18 +97,36 @@ public class ConnectGUI : MonoBehaviour {
                 status = vehicle.Status;
                 updateSpeedDisplay();
             }
-        }
+        } else
+        {
+            setGear.gameObject.SetActive(false);
+            brakeSlider.gameObject.SetActive(false);
+            throtleSlider.gameObject.SetActive(false);
+            shownGear.gameObject.SetActive(false);
+            speed.gameObject.SetActive(false); ;
+
+}
     }
 
     void OnGUI()
     {
-        if (!isConnected)
-        {
-            if (GUI.Button(new Rect(Screen.width * 0.5f - 300, Screen.height * 0.5f - 100, 600, 200), "Connect"))
-            {
-                vehicle = Kopernikus.Instance.Vehicle(carIP);
-            }
-        }
+     
+    }
+
+    void changeUItoDriveMode() {
+        setGear.gameObject.SetActive(true);
+        brakeSlider.gameObject.SetActive(true);
+        throtleSlider.gameObject.SetActive(true);
+        shownGear.gameObject.SetActive(true);
+        speed.gameObject.SetActive(true);
+
+        ipCarAddress.gameObject.SetActive(false);
+        connectVehicle.gameObject.SetActive(false);
+    }
+
+    public void connectCar() {
+        vehicle = Kopernikus.Instance.Vehicle(carIP);
+        
     }
 
     public void Throttle_Changed(float newValue)
